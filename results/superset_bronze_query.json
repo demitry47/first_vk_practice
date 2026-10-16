@@ -1,0 +1,22 @@
+{
+  "sql": "SELECT size_class, count(*) AS orders FROM (\n  SELECT orderkey,\n         CASE WHEN sum(quantity) > 300 THEN 'оптовый (> 300)'\n              WHEN sum(quantity) > 200 THEN 'большой (201–300)'\n              ELSE 'обычный (до 200)' END AS size_class\n  FROM iceberg.bronze.lineitem\n  GROUP BY orderkey) t\nGROUP BY size_class ORDER BY orders DESC",
+  "seconds": 1.91,
+  "columns": [
+    "size_class",
+    "orders"
+  ],
+  "data": [
+    {
+      "size_class": "обычный (до 200)",
+      "orders": 5667008
+    },
+    {
+      "size_class": "большой (201–300)",
+      "orders": 332743
+    },
+    {
+      "size_class": "оптовый (> 300)",
+      "orders": 249
+    }
+  ]
+}

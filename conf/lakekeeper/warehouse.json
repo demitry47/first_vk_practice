@@ -1,0 +1,20 @@
+{
+  "warehouse-name": "q18wh",
+  "storage-profile": {
+    "type": "s3",
+    "bucket": "tpch-lake",
+    "key-prefix": "iceberg",
+    "assume-role-arn": null,
+    "endpoint": "http://minio:9000",
+    "region": "us-east-1",
+    "path-style-access": true,
+    "flavor": "minio",
+    "sts-enabled": false
+  },
+  "storage-credential": {
+    "type": "s3",
+    "credential-type": "access-key",
+    "aws-access-key-id": "minio-lab",
+    "aws-secret-access-key": "minio-lab-pass-2026"
+  }
+}

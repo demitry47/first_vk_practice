@@ -1,0 +1,29 @@
+ Container q18-postgres Running 
+ Container q18-minio Running 
+ Container q18-trino Running 
+ Container q18-lakekeeper Running 
+ Container q18-minio-init Starting 
+ Container q18-postgres Waiting 
+ Container q18-minio-init Started 
+ Container q18-postgres Healthy 
+ Container q18-lakekeeper-migrate Starting 
+ Container q18-lakekeeper-migrate Started 
+ Container q18-lakekeeper-migrate Waiting 
+ Container q18-lakekeeper-migrate Exited 
+ Container q18-minio-init Waiting 
+ Container q18-lakekeeper Waiting 
+ Container q18-lakekeeper Healthy 
+ Container q18-minio-init Exited 
+ Container q18-lakekeeper-init Starting 
+ Container q18-lakekeeper-init Started 
+ Container q18-lakekeeper-init Waiting 
+ Container q18-lakekeeper-init Exited 
+ Container q18-trino Waiting 
+ Container q18-trino Healthy 
+ Container q18-lakehouse-toolbox-run-5095d138703e Creating 
+ Container q18-lakehouse-toolbox-run-5095d138703e Created 
+17:00:38 | Superset видит Trino, database id = 1
+17:00:38 | SQL Lab: запрос по Bronze
+17:00:39 | записан results/superset_bronze_query.json
+17:00:43 | записан results/superset_setup.json
+17:00:43 | дашборд: http://superset:8088/superset/dashboard/1/ (admin / admin)

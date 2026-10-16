@@ -1,0 +1,19 @@
+{
+  "superset": "http://superset:8088",
+  "database_id": 1,
+  "dashboard_id": 1,
+  "dashboard_url": "http://superset:8088/superset/dashboard/1/",
+  "datasets": {
+    "bronze.orders": 1,
+    "gold.q18_answer": 2,
+    "gold.bulk_orders_by_year": 3,
+    "gold.order_qty_histogram": 4
+  },
+  "charts": {
+    "Bronze: статусы заказов по приоритетам": 1,
+    "Оптовых заказов": 2,
+    "Оптовые заказы по годам (по сегментам)": 3,
+    "Гистограмма заказов по количеству товара": 4,
+    "Ответ Q18: топ-100": 5
+  }
+}

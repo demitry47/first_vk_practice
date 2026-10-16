@@ -1,0 +1,12 @@
+layer,table,rows,columns,column_list,files,size_bytes,size_mb,format,codec_in_file,row_groups_biggest_file,partitioning,sorted_by
+bronze,iceberg.bronze.region,5,5,"regionkey, name, comment, _load_id, _loaded_at",1,1320,0.001,PARQUET,ZSTD,1,нет,нет
+bronze,iceberg.bronze.nation,25,6,"nationkey, name, regionkey, comment, _load_id, _loaded_at",1,2364,0.002,PARQUET,ZSTD,1,нет,нет
+bronze,iceberg.bronze.customer,600000,10,"custkey, name, address, nationkey, phone, acctbal, mktsegment, comment, _load_id, _loaded_at",2,32665051,32.665,PARQUET,ZSTD,1,нет,нет
+bronze,iceberg.bronze.orders,6000000,11,"orderkey, custkey, orderstatus, totalprice, orderdate, orderpriority, clerk, shippriority, comment, _load_id, _loaded_at",8,152394002,152.394,PARQUET,ZSTD,1,нет,нет
+bronze,iceberg.bronze.lineitem,23996604,18,"orderkey, partkey, suppkey, linenumber, quantity, extendedprice, discount, tax, returnflag, linestatus, shipdate, commitdate, receiptdate, shipinstruct, shipmode, comment, _load_id, _loaded_at",12,622933217,622.933,PARQUET,ZSTD,1,нет,нет
+silver,iceberg.silver.dim_customer,600000,8,"custkey, cust_name, address, phone, acctbal, mktsegment, nation, region",1,22742391,22.742,PARQUET,ZSTD,4,нет,нет
+silver,iceberg.silver.fact_orders,6000000,14,"orderkey, custkey, orderdate, order_year, orderstatus, orderpriority, totalprice, lines_cnt, total_quantity, gross_amount, net_amount, price_ok, returned_cnt, last_receiptdate",6,137524084,137.524,PARQUET,ZSTD,14,нет,total_quantity ASC NULLS FIRST
+silver,iceberg.silver.bulk_orders,249,11,"orderkey, custkey, cust_name, mktsegment, nation, region, orderdate, order_year, totalprice, total_quantity, lines_cnt",1,7253,0.007,PARQUET,ZSTD,1,нет,нет
+gold,iceberg.gold.q18_answer,100,9,"rank_no, cust_name, custkey, orderkey, orderdate, totalprice, total_quantity, mktsegment, nation",1,3940,0.004,PARQUET,ZSTD,1,нет,нет
+gold,iceberg.gold.bulk_orders_by_year,175,8,"order_year, mktsegment, region, all_orders, bulk_orders, bulk_customers, bulk_share_pct, bulk_amount",1,3218,0.003,PARQUET,ZSTD,1,нет,нет
+gold,iceberg.gold.order_qty_histogram,14,6,"qty_from, qty_to, qty_bucket, is_bulk, orders, share_pct",1,1188,0.001,PARQUET,ZSTD,1,нет,нет

@@ -1,0 +1,44 @@
+ Container q18-postgres Running 
+ Container q18-minio Running 
+ Container q18-lakekeeper Running 
+ Container q18-trino Running 
+ Container q18-minio-init Starting 
+ Container q18-postgres Waiting 
+ Container q18-minio-init Started 
+ Container q18-postgres Healthy 
+ Container q18-lakekeeper-migrate Starting 
+ Container q18-lakekeeper-migrate Started 
+ Container q18-lakekeeper-migrate Waiting 
+ Container q18-lakekeeper-migrate Exited 
+ Container q18-minio-init Waiting 
+ Container q18-lakekeeper Waiting 
+ Container q18-minio-init Exited 
+ Container q18-lakekeeper Healthy 
+ Container q18-lakekeeper-init Starting 
+ Container q18-lakekeeper-init Started 
+ Container q18-lakekeeper-init Waiting 
+ Container q18-lakekeeper-init Exited 
+ Container q18-trino Waiting 
+ Container q18-trino Healthy 
+ Container q18-lakehouse-toolbox-run-866361bb85f3 Creating 
+ Container q18-lakehouse-toolbox-run-866361bb85f3 Created 
+16:19:01 | в каталоге iceberg доступно сессионных свойств: 46
+16:19:01 | Копия крупных заказов для экспериментов
+16:19:01 | Схема в начале
+16:19:01 | Добавляем колонку
+16:19:01 | Переименовываем колонку
+16:19:02 | Расширяем тип суммы: DECIMAL(12,2) -> DECIMAL(18,2)
+16:19:02 | Схема после ALTER
+16:19:02 | Старые файлы читаются уже по новой схеме
+16:19:02 | Заполняем size_class
+16:19:03 | Сколько заказов в каждом классе
+16:19:03 | Сбой ETL: суммы заказов с 1995 года стали нулевыми
+16:19:03 | Уже после сбоя приходит нормальный новый заказ
+16:19:04 | Снапшоты таблицы
+16:19:04 | Time travel по номеру снапшота
+16:19:05 | Time travel по времени коммита
+16:19:05 | Возвращаем totalprice из исправного снапшота
+16:19:05 | Отдельная копия таблицы в исправном состоянии (CTAS из снапшота)
+16:19:06 | Откат таблицы
+16:19:06 | Снапшоты таблицы
+16:19:06 | готово: good={'orders': 249, 'amount': Decimal('113403560.04'), 'zero_prices': 0} broken={'orders': 249, 'amount': Decimal('51052351.01'), 'zero_prices': 138} merged={'orders': 250, 'amount': Decimal('113638127.93'), 'zero_prices': 0} rollback={'orders': 249, 'amount': Decimal('113403560.04'), 'zero_prices': 0}

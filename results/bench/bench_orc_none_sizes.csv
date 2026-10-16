@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+ORC+NONE,ORC,NONE,customer,600000,1,86197693,86.198,UNCOMPRESSED,ORC,2,s3://tpch-lake/iceberg/f1aeb669-6287-4e37-bdab-ea2f0777bf70/customer-09308652599546be85563c0738ef2995/data/20261014_175716_00383_x4m9q-c98b3ba3-b52c-44d1-a2fc-ddda41505111.orc
+ORC+NONE,ORC,NONE,orders,6000000,8,405745154,405.745,UNCOMPRESSED,ORC,3,s3://tpch-lake/iceberg/ace70607-4935-444b-a06f-25c7f57983eb/orders-64f5ec1848014e7594b3c3d0a93f7d6f/data/20261014_162610_00257_x4m9q-3ab92772-5001-47a8-a397-19fbdedce06c.orc
+ORC+NONE,ORC,NONE,lineitem,23996604,12,1838508233,1838.508,UNCOMPRESSED,ORC,5,s3://tpch-lake/iceberg/3c20b3cd-9574-4190-b040-def35ce4b947/lineitem-2b55a8207c8e4dfab073f3aaedb9aeb5/data/20261014_162310_00285_x4m9q-b92300e5-1694-47fb-8cee-adac1a9fda12.orc

@@ -1,0 +1,12 @@
+layer,table,rows_written,server_s,client_s,cpu_s,read_mb,rows_processed,peak_mem_mb
+bronze,iceberg.bronze.region,5,0.222,0.251,0.058,0.0,5,0.0
+bronze,iceberg.bronze.nation,25,0.242,0.277,0.053,0.0,25,0.0
+bronze,iceberg.bronze.customer,600000,12.446,12.49,17.788,0.0,600000,53.5
+bronze,iceberg.bronze.orders,6000000,9.359,9.398,50.594,0.0,6000000,229.0
+bronze,iceberg.bronze.lineitem,23996604,34.282,34.331,230.435,0.0,23996604,824.9
+silver,iceberg.silver.dim_customer,600000,7.255,7.271,9.621,22.299,600030,136.3
+silver,iceberg.silver.fact_orders,6000000,34.141,34.149,159.029,260.436,29996604,1394.5
+silver,iceberg.silver.bulk_orders,249,1.1,1.11,1.113,14.079,1751658,74.3
+gold,iceberg.gold.q18_answer,100,0.522,0.549,0.04,0.007,249,0.0
+gold,iceberg.gold.bulk_orders_by_year,175,2.564,2.574,15.615,60.817,7200000,186.6
+gold,iceberg.gold.order_qty_histogram,14,0.353,0.375,1.517,3.1,6000000,0.0

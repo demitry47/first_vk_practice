@@ -1,0 +1,93 @@
+-- fact_orders, sorted_by total_quantity
+-- EXPLAIN ANALYZE SELECT count(*), max(total_quantity) FROM iceberg.silver.fact_orders WHERE total_quantity > 300;
+Trino version: 476
+Queued: 512.37us, Analysis: 9.64ms, Planning: 17.92ms, Execution: 176.48ms
+Fragment 1 [SINGLE]
+    CPU: 2.11ms, Scheduled: 3.87ms, Blocked 497.13ms (Input: 441.06ms, Output: 0.00ns), Input: 34 rows (612B); per task: avg.: 34.00 std.dev.: 0.00, Output: 1 row (18B)
+    Peak Memory: 528B, Tasks count: 1; per task: max: 528B
+    Output layout: [count, max]
+    Output partitioning: SINGLE []
+    Aggregate[type = FINAL]
+    │   Layout: [count:bigint, max:decimal(15,2)]
+    │   Estimates: {rows: 1 (18B), cpu: 8.82M, memory: 18B, network: 0B}
+    │   CPU: 1.00ms (0.53%), Scheduled: 1.00ms (0.21%), Blocked: 0.00ns (0.00%), Output: 1 row (18B)
+    │   Input avg.: 34.00 rows, Input std.dev.: 0.00%
+    │   count := count(count_0)
+    │   max := max(max_1)
+    └─ LocalExchange[partitioning = SINGLE]
+       │   Layout: [count_0:bigint, max_1:decimal(15,2)]
+       │   Estimates: {rows: 513761 (8.82MB), cpu: 0, memory: 0B, network: 0B}
+       │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 56.00ms (11.26%), Output: 34 rows (612B)
+       │   Input avg.: 4.25 rows, Input std.dev.: 74.86%
+       └─ RemoteSource[sourceFragmentIds = [2]]
+              Layout: [count_0:bigint, max_1:decimal(15,2)]
+              CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 441.00ms (88.74%), Output: 34 rows (612B)
+              Input avg.: 4.25 rows, Input std.dev.: 74.86%
+
+Fragment 2 [SOURCE]
+    CPU: 171.82ms, Scheduled: 431.09ms, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 551658 rows (4.74MB); per task: avg.: 551658.00 std.dev.: 0.00, Output: 34 rows (612B)
+    Peak Memory: 1.74kB, Tasks count: 1; per task: max: 2.08kB
+    Output layout: [count_0, max_1]
+    Output partitioning: SINGLE []
+    Aggregate[type = PARTIAL]
+    │   Layout: [count_0:bigint, max_1:decimal(15,2)]
+    │   Estimates: {rows: 513761 (8.82MB), cpu: ?, memory: ?, network: ?}
+    │   CPU: 2.00ms (1.17%), Scheduled: 2.00ms (0.46%), Blocked: 0.00ns (0.00%), Output: 34 rows (612B)
+    │   Input avg.: 7.32 rows, Input std.dev.: 291.40%
+    │   count_0 := count(*)
+    │   max_1 := max(total_quantity)
+    └─ ScanFilter[table = iceberg:silver.fact_orders$data@4210108038976074957, filterPredicate = (total_quantity > decimal(15,2) '300.00')]
+           Layout: [total_quantity:decimal(15,2)]
+           Estimates: {rows: 6000000 (51.50MB), cpu: 51.50M, memory: 0B, network: 0B}/{rows: 513761 (4.41MB), cpu: 51.50M, memory: 0B, network: 0B}
+           CPU: 169.00ms (98.36%), Scheduled: 428.00ms (99.30%), Blocked: 0.00ns (0.00%), Output: 249 rows (2.19kB)
+           Input avg.: 16225.24 rows, Input std.dev.: 196.73%
+           total_quantity := 9:total_quantity:decimal(15,2)
+           Input: 551658 rows (4.74MB), Filtered: 99.95%, Physical input: 1.26MB, Physical input time: 61.43ms, Splits: 34, Splits generation wait time: 4.12ms
+
+
+-- fact_orders без сортировки
+-- EXPLAIN ANALYZE SELECT count(*), max(total_quantity) FROM iceberg.bench_layout.fact_orders_unsorted WHERE total_quantity > 300;
+Trino version: 476
+Queued: 248.91us, Analysis: 5.71ms, Planning: 10.86ms, Execution: 219.70ms
+Fragment 1 [SINGLE]
+    CPU: 3.82ms, Scheduled: 5.44ms, Blocked 781.15ms (Input: 688.30ms, Output: 0.00ns), Input: 35 rows (630B); per task: avg.: 35.00 std.dev.: 0.00, Output: 1 row (18B)
+    Peak Memory: 528B, Tasks count: 1; per task: max: 528B
+    Output layout: [count, max]
+    Output partitioning: SINGLE []
+    Aggregate[type = FINAL]
+    │   Layout: [count:bigint, max:decimal(15,2)]
+    │   Estimates: {rows: 1 (18B), cpu: 8.82M, memory: 18B, network: 0B}
+    │   CPU: 1.00ms (0.40%), Scheduled: 1.00ms (0.06%), Blocked: 0.00ns (0.00%), Output: 1 row (18B)
+    │   Input avg.: 35.00 rows, Input std.dev.: 0.00%
+    │   count := count(count_0)
+    │   max := max(max_1)
+    └─ LocalExchange[partitioning = SINGLE]
+       │   Layout: [count_0:bigint, max_1:decimal(15,2)]
+       │   Estimates: {rows: 513761 (8.82MB), cpu: 0, memory: 0B, network: 0B}
+       │   CPU: 0.00ns (0.00%), Scheduled: 1.00ms (0.06%), Blocked: 93.00ms (11.90%), Output: 35 rows (630B)
+       │   Input avg.: 4.38 rows, Input std.dev.: 71.95%
+       └─ RemoteSource[sourceFragmentIds = [2]]
+              Layout: [count_0:bigint, max_1:decimal(15,2)]
+              CPU: 1.00ms (0.40%), Scheduled: 1.00ms (0.06%), Blocked: 688.00ms (88.10%), Output: 35 rows (630B)
+              Input avg.: 4.38 rows, Input std.dev.: 71.95%
+
+Fragment 2 [SOURCE]
+    CPU: 251.64ms, Scheduled: 1.87s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 6000000 rows (51.50MB); per task: avg.: 6000000.00 std.dev.: 0.00, Output: 35 rows (630B)
+    Peak Memory: 1.72kB, Tasks count: 1; per task: max: 1.72kB
+    Output layout: [count_0, max_1]
+    Output partitioning: SINGLE []
+    Aggregate[type = PARTIAL]
+    │   Layout: [count_0:bigint, max_1:decimal(15,2)]
+    │   Estimates: {rows: 513761 (8.82MB), cpu: ?, memory: ?, network: ?}
+    │   CPU: 7.00ms (2.78%), Scheduled: 7.00ms (0.37%), Blocked: 0.00ns (0.00%), Output: 35 rows (630B)
+    │   Input avg.: 7.11 rows, Input std.dev.: 44.02%
+    │   count_0 := count(*)
+    │   max_1 := max(total_quantity)
+    └─ ScanFilter[table = iceberg:bench_layout.fact_orders_unsorted$data@593568141898282911, filterPredicate = (total_quantity > decimal(15,2) '300.00')]
+           Layout: [total_quantity:decimal(15,2)]
+           Estimates: {rows: 6000000 (51.50MB), cpu: 51.50M, memory: 0B, network: 0B}/{rows: 513761 (4.41MB), cpu: 51.50M, memory: 0B, network: 0B}
+           CPU: 243.00ms (96.43%), Scheduled: 1.86s (99.47%), Blocked: 0.00ns (0.00%), Output: 249 rows (2.19kB)
+           Input avg.: 171428.57 rows, Input std.dev.: 25.10%
+           total_quantity := 9:total_quantity:decimal(15,2)
+           Input: 6000000 rows (51.50MB), Filtered: 100.00%, Physical input: 9.76MB, Physical input time: 1.58s, Splits: 35, Splits generation wait time: 6.08ms
+

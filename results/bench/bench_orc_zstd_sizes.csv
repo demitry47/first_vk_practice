@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+ORC+ZSTD,ORC,ZSTD,customer,600000,1,29943435,29.943,ZSTD,ORC,1,s3://tpch-lake/iceberg/2e07c807-a6be-4bca-82e6-33246c6a4bc7/customer-2327388ba113479da31ab64b6c9ce5df/data/20261014_164056_00435_x4m9q-76485fd7-54b3-494d-878a-3d59f8722650.orc
+ORC+ZSTD,ORC,ZSTD,orders,6000000,8,139833079,139.833,ZSTD,ORC,1,s3://tpch-lake/iceberg/86f54b5b-a541-4d84-9b0b-76879ab431fd/orders-51527de93cae4a0fa492ba2c877b5f6b/data/20261014_171435_00451_x4m9q-0b75242e-6e20-4451-9953-73bb7fbae494.orc
+ORC+ZSTD,ORC,ZSTD,lineitem,23996604,12,660225775,660.226,ZSTD,ORC,2,s3://tpch-lake/iceberg/75027016-73c0-4874-9482-e8c2335b89b0/lineitem-2e19f0aed88244eea459104c40e2521b/data/20261014_173347_00276_x4m9q-61b0866b-226b-4026-a8ed-4a020b9db0c8.orc

@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+PARQUET+SNAPPY,PARQUET,SNAPPY,customer,600000,1,49559412,49.559,SNAPPY,PARQUET,1,s3://tpch-lake/iceberg/d22c50ad-a101-47d1-9abc-d7e8c0f16f56/customer-9a802c21bbfc4ecfbda9a2d779a24191/data/20261014_172513_00429_x4m9q-86d748b1-f99c-46b7-975f-a95b81443356.parquet
+PARQUET+SNAPPY,PARQUET,SNAPPY,orders,6000000,8,228343835,228.344,SNAPPY,PARQUET,1,s3://tpch-lake/iceberg/dd6864b0-50c0-4632-803c-1cc40c15242d/orders-8a4b2b6befa64dc3b40d39a9467091b7/data/20261014_173026_00416_x4m9q-8c2cf75e-5f00-4aaf-b466-8a3082224755.parquet
+PARQUET+SNAPPY,PARQUET,SNAPPY,lineitem,23996604,12,834463048,834.463,SNAPPY,PARQUET,1,s3://tpch-lake/iceberg/7d8b0fe1-1bdf-46b0-8a70-83f8e993ab63/lineitem-256f8b606100478e84d367277b7137f1/data/20261014_161454_00371_x4m9q-c0d9aa3c-319c-4776-9df4-87042785a865.parquet

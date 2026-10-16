@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+ORC+GZIP,ORC,GZIP,customer,600000,1,30304273,30.304,ZLIB,ORC,1,s3://tpch-lake/iceberg/342cebf8-a9c6-49c9-8336-e8e2a0a6d536/customer-3a3e6df079254f36becef5f4e030cbdd/data/20261014_174219_00508_x4m9q-f289ce37-9278-4a9e-8de6-2ef2c4ebcc49.orc
+ORC+GZIP,ORC,GZIP,orders,6000000,8,137252782,137.253,ZLIB,ORC,1,s3://tpch-lake/iceberg/700da08e-c800-4c23-b1e9-822d562d33da/orders-9bba4b4d26c449d2a78827d97faedce7/data/20261014_161911_00211_x4m9q-7f81a9b9-7605-49f1-8ddd-0114a4c17bb0.orc
+ORC+GZIP,ORC,GZIP,lineitem,23996604,12,640418382,640.418,ZLIB,ORC,2,s3://tpch-lake/iceberg/6f8d65c9-9b67-47f4-879e-3774438ca4de/lineitem-eef57f8f23c248f99b3a22a8e55fbd46/data/20261014_174049_00436_x4m9q-bfcec6fe-56d3-43fb-96d2-1e7cdaad0834.orc

@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+PARQUET+NONE,PARQUET,NONE,customer,600000,1,98099783,98.1,UNCOMPRESSED,PARQUET,1,s3://tpch-lake/iceberg/72a2395e-9837-4a34-969d-304e38853710/customer-04b492ed91614f0a92a516662a0bf6f8/data/20261014_164047_00460_x4m9q-c5e97108-fdf6-46c3-a3ca-85cfb8f9e9d6.parquet
+PARQUET+NONE,PARQUET,NONE,orders,6000000,8,481193592,481.194,UNCOMPRESSED,PARQUET,2,s3://tpch-lake/iceberg/a5955789-cb07-46a9-acc6-09b9ee5562a0/orders-c78e85f62a674de998dbe22148bc0c24/data/20261014_175032_00363_x4m9q-31fb777c-9f16-4e29-a30c-b28a16cc162a.parquet
+PARQUET+NONE,PARQUET,NONE,lineitem,23996604,12,1512218785,1512.219,UNCOMPRESSED,PARQUET,2,s3://tpch-lake/iceberg/9f0bae26-8f3f-4a1d-aaf4-107bcc227d16/lineitem-a37c3a42f9574a3e9ba4cab9589df15c/data/20261014_172938_00421_x4m9q-4ce961d8-c23d-4f75-8426-b52fa6d8371d.parquet

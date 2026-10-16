@@ -1,0 +1,166 @@
+# Локальный Lakehouse для практической №1 (вариант 3, TPC-H Q18 "Large Volume Customer")
+#
+# Что поднимается:
+#   minio        хранилище S3: parquet/orc-файлы и метаданные Iceberg (бакет tpch-lake)
+#   postgres     база, в которой Lakekeeper держит состояние каталога
+#   lakekeeper   Iceberg REST Catalog, warehouse q18wh
+#   trino        SQL-движок, каталоги iceberg и tpch
+#   toolbox      python-скрипты: ELT, бенчмарк, Iceberg-демо, сводка (профиль tools)
+#   superset     BI поверх таблиц Iceberg (профиль bi)
+#
+# Запуск:
+#   docker compose up -d                          основной стек
+#   docker compose --profile bi up -d superset    BI
+
+name: q18-lakehouse
+
+x-lakekeeper-env: &lakekeeper-env
+  LAKEKEEPER__PG_DATABASE_URL_READ: postgresql://postgres:${PG_PASSWORD}@postgres:5432/postgres
+  LAKEKEEPER__PG_DATABASE_URL_WRITE: postgresql://postgres:${PG_PASSWORD}@postgres:5432/postgres
+  LAKEKEEPER__PG_ENCRYPTION_KEY: ${LAKEKEEPER_ENCRYPTION_KEY}
+  LAKEKEEPER__AUTHZ_BACKEND: allowall
+
+services:
+  minio:
+    image: ${MINIO_IMAGE}
+    container_name: q18-minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+      MINIO_DEFAULT_BUCKETS: tpch-lake
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # веб-консоль
+    volumes:
+      - minio-data:/bitnami/minio/data
+
+  # страховка: создает бакет, если образ не успел сделать это сам; клиент mc есть в том же образе
+  minio-init:
+    image: ${MINIO_IMAGE}
+    container_name: q18-minio-init
+    depends_on: [minio]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >
+        for i in $$(seq 1 60); do
+          mc alias set s3 http://minio:9000 ${MINIO_USER} ${MINIO_PASSWORD} >/dev/null 2>&1 && break;
+          echo "MinIO еще не готов, попытка $$i"; sleep 2;
+        done;
+        mc mb --ignore-existing s3/tpch-lake && mc ls s3
+
+  postgres:
+    image: ${POSTGRES_IMAGE}
+    container_name: q18-postgres
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      retries: 30
+
+  lakekeeper-migrate:
+    image: ${LAKEKEEPER_IMAGE}
+    container_name: q18-lakekeeper-migrate
+    environment: *lakekeeper-env
+    command: ["migrate"]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  lakekeeper:
+    image: ${LAKEKEEPER_IMAGE}
+    container_name: q18-lakekeeper
+    environment: *lakekeeper-env
+    command: ["serve"]
+    ports:
+      - "8181:8181"
+    depends_on:
+      lakekeeper-migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: ["CMD", "/home/nonroot/lakekeeper", "healthcheck"]
+      interval: 3s
+      retries: 30
+      start_period: 5s
+
+  # первичная настройка каталога (bootstrap) и регистрация warehouse q18wh в бакете tpch-lake
+  lakekeeper-init:
+    image: ${CURL_IMAGE}
+    container_name: q18-lakekeeper-init
+    depends_on:
+      lakekeeper: {condition: service_healthy}
+      minio-init: {condition: service_completed_successfully}
+    volumes:
+      - ./conf/lakekeeper/warehouse.json:/init/warehouse.json:ro
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >
+        curl -s -o /dev/null -w 'bootstrap: HTTP %{http_code}\n' -X POST http://lakekeeper:8181/management/v1/bootstrap
+        -H 'Content-Type: application/json' -d '{"accept-terms-of-use": true}';
+        curl -s -w '\nwarehouse: HTTP %{http_code}\n' -X POST http://lakekeeper:8181/management/v1/warehouse
+        -H 'Content-Type: application/json' -d @/init/warehouse.json;
+        echo 'при повторном запуске 400/409 - это нормально, все уже создано'
+
+  trino:
+    image: ${TRINO_IMAGE}
+    container_name: q18-trino
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./conf/trino/catalog:/etc/trino/catalog:ro
+      - ./conf/trino/config.properties:/etc/trino/config.properties:ro
+    depends_on:
+      lakekeeper-init: {condition: service_completed_successfully}
+
+  toolbox:
+    build: ./tools
+    image: q18-toolbox:1.0
+    container_name: q18-toolbox
+    profiles: ["tools"]
+    working_dir: /work
+    volumes:
+      - ./:/work
+    environment:
+      TRINO_URL: http://trino:8080
+      S3_ENDPOINT: minio:9000
+      MINIO_USER: ${MINIO_USER}
+      MINIO_PASSWORD: ${MINIO_PASSWORD}
+      SCALE: ${SCALE}
+      WRITE_REPEATS: ${WRITE_REPEATS}
+      READ_REPEATS: ${READ_REPEATS}
+      SUPERSET_URL: http://superset:8088
+    depends_on:
+      trino: {condition: service_healthy}
+
+  superset:
+    build: ./conf/superset
+    image: q18-superset:4.1.2
+    container_name: q18-superset
+    profiles: ["bi"]
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./conf/superset/superset_config.py:/app/pythonpath/superset_config.py:ro
+      - superset-data:/app/superset_home
+    command:
+      - /bin/bash
+      - -c
+      - >
+        superset db upgrade &&
+        (superset fab create-admin --username admin --firstname Q18 --lastname Admin
+        --email admin@q18.local --password admin || true) &&
+        superset init &&
+        superset set-database-uri -d 'Trino / Iceberg' -u 'trino://superset@trino:8080/iceberg' &&
+        /usr/bin/run-server.sh
+    depends_on:
+      trino: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8088/health || exit 1"]
+      interval: 10s
+      retries: 30
+      start_period: 60s
+
+volumes:
+  minio-data:
+  pg-data:
+  superset-data:

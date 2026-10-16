@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+PARQUET+ZSTD,PARQUET,ZSTD,customer,600000,1,32616899,32.617,ZSTD,PARQUET,1,s3://tpch-lake/iceberg/f28ab4ba-fdbd-4dda-be2d-4585beda22af/customer-d8722ac43d3a490c979e3e42cef677db/data/20261014_171333_00268_x4m9q-a3995e9b-6845-473e-a38c-7a2cc98a7661.parquet
+PARQUET+ZSTD,PARQUET,ZSTD,orders,6000000,8,152498281,152.498,ZSTD,PARQUET,1,s3://tpch-lake/iceberg/6c472767-76c8-4494-ac9b-cdc99d1b1be5/orders-9be2f609e2ee450fa9776a97cd33221e/data/20261014_174345_00202_x4m9q-cdc0a1a7-d1cf-455e-b066-87a5fb8f132e.parquet
+PARQUET+ZSTD,PARQUET,ZSTD,lineitem,23996604,12,623378627,623.379,ZSTD,PARQUET,1,s3://tpch-lake/iceberg/116ae378-4a2b-4a1f-ae5d-812db2bd84c3/lineitem-77533ef001d6492fab64534ddacf3f9f/data/20261014_162715_00389_x4m9q-688d68c3-af75-417d-8ac6-f332da397b25.parquet

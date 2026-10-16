@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+PARQUET+GZIP,PARQUET,GZIP,customer,600000,1,32168844,32.169,GZIP,PARQUET,1,s3://tpch-lake/iceberg/e2b9bf1a-56f3-44e1-befb-93d1aa055d18/customer-f7ce289b489f43188f34ccd74bbe936d/data/20261014_165613_00389_x4m9q-1ab0449a-5d7b-4ffa-a7bf-20c196b47758.parquet
+PARQUET+GZIP,PARQUET,GZIP,orders,6000000,8,146968481,146.968,GZIP,PARQUET,1,s3://tpch-lake/iceberg/6d356c57-fedf-4505-95f5-0e2020b3768a/orders-62c41ede4de34815b20e2b9448f9e7b6/data/20261014_173517_00422_x4m9q-1c2de2fa-7631-403b-b5e2-a02bc2970934.parquet
+PARQUET+GZIP,PARQUET,GZIP,lineitem,23996604,12,609357305,609.357,GZIP,PARQUET,1,s3://tpch-lake/iceberg/3ce0023c-5094-4870-b9ce-5202afa1c0a4/lineitem-13a5d81930004bd4b095206650f3f2f7/data/20261014_165658_00339_x4m9q-c237b729-7257-4bd4-abb8-bc59325ab8c0.parquet

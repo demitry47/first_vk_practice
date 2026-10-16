@@ -1,0 +1,21 @@
+check,value
+bronze.lineitem: строк,23996604
+lineitem: orderkey IS NULL,0
+lineitem: quantity <= 0,0
+lineitem: extendedprice <= 0,0
+lineitem: discount или tax вне [0;1],0
+lineitem: позиции без заказа,0
+bronze.orders: строк,6000000
+orders: заказы без позиций,0
+silver.fact_orders: строк,6000000
+fact_orders: price_ok = false,0
+fact_orders: макс. |totalprice − net_amount|,0.1148
+fact_orders: макс. |totalprice − net_amount| / lines_cnt,0.0205
+orders: totalprice ≠ сумме позиций с усечением как в генераторе,0
+bronze.customer: строк,600000
+customer: повторы custkey,0
+silver.dim_customer: строк,600000
+dim_customer: nation IS NULL,0
+fact_orders: total_quantity > 300,249
+silver.bulk_orders: строк,249
+fact_orders: max(total_quantity),328.00

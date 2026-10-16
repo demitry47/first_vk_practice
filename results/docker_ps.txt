@@ -1,0 +1,9 @@
+NAME                     IMAGE                               STATUS
+q18-lakekeeper           quay.io/lakekeeper/catalog:v0.9.0   Up About an hour (healthy)
+q18-lakekeeper-init      curlimages/curl:8.11.1              Exited (0) 3 minutes ago
+q18-lakekeeper-migrate   quay.io/lakekeeper/catalog:v0.9.0   Exited (0) 3 minutes ago
+q18-minio                bitnamilegacy/minio:2025.4.22       Up About an hour
+q18-minio-init           bitnamilegacy/minio:2025.4.22       Exited (0) 3 minutes ago
+q18-postgres             postgres:17.5                       Up About an hour (healthy)
+q18-superset             q18-superset:4.1.2                  Up 6 minutes (healthy)
+q18-trino                trinodb/trino:476                   Up About an hour (healthy)

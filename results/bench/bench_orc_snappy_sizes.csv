@@ -1,0 +1,4 @@
+variant,format,codec,table,rows,files,size_bytes,size_mb,codec_in_file,container_in_file,blocks_in_file,checked_file
+ORC+SNAPPY,ORC,SNAPPY,customer,600000,1,44617419,44.617,SNAPPY,ORC,1,s3://tpch-lake/iceberg/0cb1765c-02cc-48f7-9a6a-cad6dead3f55/customer-5b89ab245267450c8c911999e32bda96/data/20261014_164530_00316_x4m9q-044ec74a-c4cc-4926-81c6-249e52e05411.orc
+ORC+SNAPPY,ORC,SNAPPY,orders,6000000,8,192228191,192.228,SNAPPY,ORC,2,s3://tpch-lake/iceberg/238f1858-a9e9-4ed9-9616-91b76e179768/orders-8d3ce428c0bb4b53a3f19a6c157168e3/data/20261014_162319_00249_x4m9q-e5daa9b8-f6bd-47f9-8c96-793a4f55f5ad.orc
+ORC+SNAPPY,ORC,SNAPPY,lineitem,23996604,12,910258679,910.259,SNAPPY,ORC,3,s3://tpch-lake/iceberg/f7e4dde9-5520-41c0-8c51-67110e4daeb9/lineitem-c27acb6f4f3e419c981126e745862a01/data/20261014_162516_00308_x4m9q-a99824c2-ab45-462d-8cfd-2cc5987231df.orc

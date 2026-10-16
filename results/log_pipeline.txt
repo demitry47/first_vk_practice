@@ -1,0 +1,97 @@
+ Container q18-postgres Running 
+ Container q18-trino Running 
+ Container q18-lakekeeper Running 
+ Container q18-minio Running 
+ Container q18-minio-init Starting 
+ Container q18-postgres Waiting 
+ Container q18-minio-init Started 
+ Container q18-postgres Healthy 
+ Container q18-lakekeeper-migrate Starting 
+ Container q18-lakekeeper-migrate Started 
+ Container q18-lakekeeper-migrate Waiting 
+ Container q18-lakekeeper-migrate Exited 
+ Container q18-minio-init Waiting 
+ Container q18-lakekeeper Waiting 
+ Container q18-lakekeeper Healthy 
+ Container q18-minio-init Exited 
+ Container q18-lakekeeper-init Starting 
+ Container q18-lakekeeper-init Started 
+ Container q18-lakekeeper-init Waiting 
+ Container q18-lakekeeper-init Exited 
+ Container q18-trino Waiting 
+ Container q18-trino Healthy 
+ Container q18-lakehouse-toolbox-run-2e943d3a4cd1 Creating 
+ Container q18-lakehouse-toolbox-run-2e943d3a4cd1 Created 
+16:11:49 | Trino на связи
+16:11:49 | идентификатор загрузки: load-20261014-161149-b4e220
+16:11:49 | в каталоге iceberg доступно сессионных свойств: 46
+16:11:49 | ----- BRONZE (01_bronze.sql)
+16:11:49 |     0.02 s | create schema if not exists iceberg.bronze
+16:11:49 |     0.09 s | drop table if exists iceberg.bronze.region
+16:11:49 |     0.22 s | create table iceberg.bronze.region with (format = 'PARQUET') as select src.*, 'load-20261014-161149-
+16:11:49 |     0.06 s | drop table if exists iceberg.bronze.nation
+16:11:49 |     0.24 s | create table iceberg.bronze.nation with (format = 'PARQUET') as select src.*, 'load-20261014-161149-
+16:11:49 |     0.02 s | drop table if exists iceberg.bronze.customer
+16:12:02 |    12.45 s | create table iceberg.bronze.customer with (format = 'PARQUET') as select src.*, 'load-20261014-16114
+16:12:02 |     0.06 s | drop table if exists iceberg.bronze.orders
+16:12:11 |     9.36 s | create table iceberg.bronze.orders with (format = 'PARQUET') as select src.*, 'load-20261014-161149-
+16:12:11 |     0.07 s | drop table if exists iceberg.bronze.lineitem
+16:12:45 |    34.28 s | create table iceberg.bronze.lineitem with (format = 'PARQUET') as select src.*, 'load-20261014-16114
+16:12:45 | ----- SILVER (02_silver.sql)
+16:12:45 |     0.02 s | create schema if not exists iceberg.silver
+16:12:45 |     0.07 s | drop table if exists iceberg.silver.dim_customer
+16:12:53 |     7.25 s | create table iceberg.silver.dim_customer with (format = 'PARQUET') as with dedup as ( select c.*, ro
+16:12:53 |     0.09 s | drop table if exists iceberg.silver.fact_orders
+16:13:27 |    34.14 s | create table iceberg.silver.fact_orders with (format = 'PARQUET', sorted_by = ARRAY['total_quantity'
+16:13:27 |     0.03 s | drop table if exists iceberg.silver.bulk_orders
+16:13:28 |     1.10 s | create table iceberg.silver.bulk_orders with (format = 'PARQUET') as select f.orderkey, f.custkey, c
+16:13:28 | ----- GOLD (03_gold.sql)
+16:13:28 |     0.01 s | create schema if not exists iceberg.gold
+16:13:28 |     0.03 s | drop table if exists iceberg.gold.q18_answer
+16:13:29 |     0.52 s | create table iceberg.gold.q18_answer with (format = 'PARQUET') as select cast(row_number() over (ord
+16:13:29 |     0.05 s | drop table if exists iceberg.gold.bulk_orders_by_year
+16:13:31 |     2.56 s | create table iceberg.gold.bulk_orders_by_year with (format = 'PARQUET') as select f.order_year, c.m
+16:13:31 |     0.09 s | drop table if exists iceberg.gold.order_qty_histogram
+16:13:32 |     0.35 s | create table iceberg.gold.order_qty_histogram with (format = 'PARQUET') as with bucketed as ( sel
+16:13:32 | записан results/pipeline_steps.csv (11 строк)
+16:13:33 | bronze.region                                 5 строк       0.00 МБ     ZSTD sort=нет
+16:13:34 | bronze.nation                                25 строк       0.00 МБ     ZSTD sort=нет
+16:13:34 | bronze.customer                         600,000 строк      32.66 МБ     ZSTD sort=нет
+16:13:34 | bronze.orders                         6,000,000 строк     152.39 МБ     ZSTD sort=нет
+16:13:35 | bronze.lineitem                      23,996,604 строк     622.93 МБ     ZSTD sort=нет
+16:13:35 | silver.dim_customer                     600,000 строк      22.74 МБ     ZSTD sort=нет
+16:13:35 | silver.fact_orders                    6,000,000 строк     137.52 МБ     ZSTD sort=total_quantity ASC NULLS FIRST
+16:13:35 | silver.bulk_orders                          249 строк       0.01 МБ     ZSTD sort=нет
+16:13:36 | gold.q18_answer                             100 строк       0.00 МБ     ZSTD sort=нет
+16:13:36 | gold.bulk_orders_by_year                    175 строк       0.00 МБ     ZSTD sort=нет
+16:13:36 | gold.order_qty_histogram                     14 строк       0.00 МБ     ZSTD sort=нет
+16:13:36 | записан results/layers.csv (11 строк)
+16:13:37 | DQ | bronze.lineitem: строк: 23996604
+16:13:37 | DQ | lineitem: orderkey IS NULL: 0
+16:13:38 | DQ | lineitem: quantity <= 0: 0
+16:13:38 | DQ | lineitem: extendedprice <= 0: 0
+16:13:39 | DQ | lineitem: discount или tax вне [0;1]: 0
+16:13:41 | DQ | lineitem: позиции без заказа: 0
+16:13:41 | DQ | bronze.orders: строк: 6000000
+16:13:43 | DQ | orders: заказы без позиций: 0
+16:13:43 | DQ | silver.fact_orders: строк: 6000000
+16:13:44 | DQ | fact_orders: price_ok = false: 0
+16:13:44 | DQ | fact_orders: макс. |totalprice − net_amount|: 0.1148
+16:13:45 | DQ | fact_orders: макс. |totalprice − net_amount| / lines_cnt: 0.0205
+16:13:51 | DQ | orders: totalprice ≠ сумме позиций с усечением как в генераторе: 0
+16:13:51 | DQ | bronze.customer: строк: 600000
+16:13:51 | DQ | customer: повторы custkey: 0
+16:13:51 | DQ | silver.dim_customer: строк: 600000
+16:13:51 | DQ | dim_customer: nation IS NULL: 0
+16:13:52 | DQ | fact_orders: total_quantity > 300: 249
+16:13:52 | DQ | silver.bulk_orders: строк: 249
+16:13:52 | DQ | fact_orders: max(total_quantity): 328.00
+16:13:52 | записан results/dq_checks.csv (20 строк)
+16:13:52 | записан results/fact_orders_rowgroups.csv (34 строк)
+16:13:52 | сверка: Q18 прямо по tpch.sf4
+16:14:04 | записан results/gold_q18_answer.csv (100 строк)
+16:14:04 | записан results/gold_bulk_orders_by_year.csv (175 строк)
+16:14:04 | записан results/gold_order_qty_histogram.csv (14 строк)
+16:14:06 | сверка: эталонный ответ TPC-H для SF1
+16:14:09 | Gold против Q18: OK; эталон SF1: OK
+16:14:09 | слои готовы, следующий шаг: tools/iceberg_part2.py, потом ./bench.sh
